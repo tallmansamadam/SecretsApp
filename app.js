@@ -32,6 +32,27 @@ app.get("/login", function(req, res) {
     res.render("login");
 });
 
+app.post("/login", function(req, res) {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.findOne({email: username}, function(err, foundUser) {
+        if (!err) {
+            if (foundUser) {
+                if (foundUser.password === password) {
+                    res.render("secrets");
+                } else {
+                    console.log("Incorrect Password");
+                }
+            } else {
+                console.log("User not found!");
+            }
+        } else {
+            console.log(err);
+        }
+    });
+});
+
 app.get("/register", function(req, res) {
     res.render("register");
 })
